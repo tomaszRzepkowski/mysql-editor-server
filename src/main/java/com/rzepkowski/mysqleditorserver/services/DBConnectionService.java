@@ -7,26 +7,18 @@ import java.sql.Statement;
 
 import org.springframework.stereotype.Service;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+import com.rzepkowski.mysqleditorserver.DataSourceProvider;
 
 @Service
 public class DBConnectionService {
+    final DataSourceProvider dataSourceProvider;
 
-    String dbName = "sys";
-    String dbName2 = "information_schema";
-    String dbHost = "localhost";
-    int dbPort = 3306;
-    String dbUser = "editor";
-    String dbPassword = "password";
+    public DBConnectionService(DataSourceProvider dataSourceProvider) {
+        this.dataSourceProvider = dataSourceProvider;
+    }
 
     public void tryToConnect() throws SQLException {
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUser(dbUser);
-        dataSource.setPassword(dbPassword);
-        dataSource.setServerName(dbHost);
-        dataSource.setPort(dbPort);
-        dataSource.setDatabaseName(dbName2);
-        Connection conn = dataSource.getConnection();
+        Connection conn = dataSourceProvider.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("select schema_name as database_name\n" +
                 "from information_schema.schemata\n" +
