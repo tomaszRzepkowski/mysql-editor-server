@@ -13,7 +13,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 public class DataSourceProvider {
     private Logger logger =  LoggerFactory.getLogger(DataSourceProvider.class);
 
-    private MysqlDataSource dataSource = new MysqlDataSource();
+    private MysqlDataSource dataSource;
     private String dbName = "sys";
     private String dbName2 = "information_schema";
     private String dbHost = "localhost";
@@ -22,6 +22,7 @@ public class DataSourceProvider {
     private String dbPassword = "password";
 
     public DataSourceProvider() {
+        dataSource = new MysqlDataSource();
         dataSource.setUser(dbUser);
         dataSource.setPassword(dbPassword);
         dataSource.setServerName(dbHost);
@@ -35,7 +36,7 @@ public class DataSourceProvider {
 
     public Connection getConnection() {
         try {
-            getDataSource().getConnection();
+            return getDataSource().getConnection();
         } catch (SQLException throwables) {
             logger.warn("Couldn't provide DB connection", throwables);
         }

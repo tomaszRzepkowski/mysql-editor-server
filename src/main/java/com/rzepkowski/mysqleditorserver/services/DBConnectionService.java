@@ -18,8 +18,8 @@ public class DBConnectionService {
     }
 
     public void tryToConnect() throws SQLException {
-        Connection conn = dataSourceProvider.getConnection();
-        Statement stmt = conn.createStatement();
+//        Connection conn = dataSourceProvider.getConnection();
+        Statement stmt = dataSourceProvider.getConnection().createStatement();
         ResultSet rs = stmt.executeQuery("select schema_name as database_name\n" +
                 "from information_schema.schemata\n" +
                 "order by schema_name;");
@@ -31,7 +31,7 @@ public class DBConnectionService {
 
         rs.close();
         stmt.close();
-        conn.close();
+//        conn.close();
     }
 
 }
