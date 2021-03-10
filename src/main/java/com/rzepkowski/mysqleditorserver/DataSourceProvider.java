@@ -11,7 +11,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 @Service
 public class DataSourceProvider {
-    private Logger logger =  LoggerFactory.getLogger(DataSourceProvider.class);
+    private final Logger logger =  LoggerFactory.getLogger(DataSourceProvider.class);
 
     private MysqlDataSource dataSource;
     private String dbName = "sys";
@@ -41,5 +41,9 @@ public class DataSourceProvider {
             logger.warn("Couldn't provide DB connection", throwables);
         }
         return null;
+    }
+
+    public void selectSchema(String schemaName) {
+        dataSource.setDatabaseName(schemaName);
     }
 }
