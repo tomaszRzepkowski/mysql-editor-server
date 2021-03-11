@@ -21,18 +21,18 @@ public class DBInformationController {
     }
 
     @GetMapping("/tables")
-    Map<String, Object> getTables() {
-        return dbConnectionService.executeStatement("select schema_name as database_name " +
-                "from information_schema.schemata " +
-                "order by schema_name;");
+    Map<String, Object> getTables(@RequestParam String schemaName) {
+        return dbConnectionService.executeStatement("select table_name\n" +
+                "from information_schema.tables\n" +
+                "where table_type = 'BASE TABLE' and table_schema = '" + schemaName + "'");
     }
 
     @GetMapping("/schemas")
     Map<String, Object> getSchemas() {
-//        return dbConnectionService.executeStatement("show databases;");
-        return dbConnectionService.executeStatement("select * " +
-                "from information_schema.schemata " +
-                "order by schema_name;");
+        return dbConnectionService.executeStatement("show databases;");
+//        return dbConnectionService.executeStatement("select * " +
+//                "from information_schema.schemata " +
+//                "order by schema_name;");
     }
 
     @PutMapping("/schema")
