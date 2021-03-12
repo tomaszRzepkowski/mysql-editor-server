@@ -26,7 +26,7 @@ public class DBConnectionService {
         this.dataSourceProvider = dataSourceProvider;
     }
 
-    public Map<String, Object> executeStatement(String sql) {
+    public Map<String, Object> executeStatement(String sql) throws SQLException {
         Map<String, Object> results = null;
         try {
             Statement stmt = dataSourceProvider.getConnection().createStatement();
@@ -72,11 +72,15 @@ public class DBConnectionService {
             return results;
         } catch (SQLException e) {
             logger.warn("User provided wrong SQL or there is DB connection problem", e);
-            return results;
+            throw new SQLException(e.getMessage());
         }
     }
 
     public void selectSchema(String schemaName) {
         this.dataSourceProvider.selectSchema(schemaName);
+    }
+
+    public DataSourceProvider getDataSourceProvider() {
+        return dataSourceProvider;
     }
 }

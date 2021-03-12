@@ -14,12 +14,14 @@ public class DataSourceProvider {
     private final Logger logger =  LoggerFactory.getLogger(DataSourceProvider.class);
 
     private MysqlDataSource dataSource;
-    private String dbName = "sys";
-    private String dbName2 = "information_schema";
-    private String dbHost = "localhost";
-    private int dbPort = 3306;
-    private String dbUser = "editor";
-    private String dbPassword = "password";
+    private final static String dbName = "sys";
+    private final static String INITIAL_SCHEMA = "information_schema";
+    private final static String dbHost = "localhost";
+    private final static int dbPort = 3306;
+    private final static String dbUser = "editor";
+    private final static String dbPassword = "password";
+
+    private String currentSchema = INITIAL_SCHEMA;
 
     public DataSourceProvider() {
         dataSource = new MysqlDataSource();
@@ -27,7 +29,7 @@ public class DataSourceProvider {
         dataSource.setPassword(dbPassword);
         dataSource.setServerName(dbHost);
         dataSource.setPort(dbPort);
-        dataSource.setDatabaseName(dbName2);
+        dataSource.setDatabaseName(INITIAL_SCHEMA);
     }
 
     public MysqlDataSource getDataSource() {
@@ -45,5 +47,11 @@ public class DataSourceProvider {
 
     public void selectSchema(String schemaName) {
         dataSource.setDatabaseName(schemaName);
+        currentSchema = schemaName;
     }
+
+    public String getCurrentSchema() {
+        return currentSchema;
+    }
+
 }

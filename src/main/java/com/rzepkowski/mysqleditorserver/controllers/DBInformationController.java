@@ -1,12 +1,15 @@
 package com.rzepkowski.mysqleditorserver.controllers;
 
+import java.sql.SQLException;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.rzepkowski.mysqleditorserver.services.DBConnectionService;
 
@@ -22,17 +25,27 @@ public class DBInformationController {
 
     @GetMapping("/tables")
     Map<String, Object> getTables(@RequestParam String schemaName) {
-        return dbConnectionService.executeStatement("select table_name\n" +
-                "from information_schema.tables\n" +
-                "where table_type = 'BASE TABLE' and table_schema = '" + schemaName + "'");
+        try {
+            return dbConnectionService.executeStatement("select table_name\n" +
+                    "from information_schema.tables\n" +
+                    "where table_type = 'BASE TABLE' and table_schema = '" + schemaName + "'");
+        } catch (SQLException throwables) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, throwables.getMessage(), throwables);
+        }
     }
 
     @GetMapping("/schemas")
     Map<String, Object> getSchemas() {
-        return dbConnectionService.executeStatement("show databases;");
-//        return dbConnectionService.executeStatement("select * " +
-//                "from information_schema.schemata " +
-//                "order by schema_name;");
+        try {
+            return dbConnectionService.executeStatement("show databases;");
+        } catch (SQLException throwables) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, throwables.getMessage(), throwables);
+        }
+    }
+
+    @GetMapping("/schema")
+    String getSelectedSchema() {
+        return dbConnectionService.getDataSourceProvider().getCurrentSchema();
     }
 
     @PutMapping("/schema")
