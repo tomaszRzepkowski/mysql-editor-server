@@ -1,5 +1,6 @@
 package com.rzepkowski.mysqleditorserver.services;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.rzepkowski.mysqleditorserver.DataSourceProvider;
+import com.rzepkowski.mysqleditorserver.model.ConnectionModel;
 
 @Service
 public class DBConnectionService {
@@ -82,5 +84,10 @@ public class DBConnectionService {
 
     public DataSourceProvider getDataSourceProvider() {
         return dataSourceProvider;
+    }
+
+    public boolean tryToEstablishConnection(ConnectionModel data) throws SQLException {
+        Connection connection = this.dataSourceProvider.tryToConnect(data);
+        return connection != null && connection.isClosed();
     }
 }

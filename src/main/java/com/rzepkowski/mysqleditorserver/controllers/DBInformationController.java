@@ -43,7 +43,7 @@ public class DBInformationController {
         }
     }
 
-    @GetMapping("/schema")
+    @GetMapping(value = "/schema", produces = "text/plain")
     String getSelectedSchema() {
         return dbConnectionService.getDataSourceProvider().getCurrentSchema();
     }

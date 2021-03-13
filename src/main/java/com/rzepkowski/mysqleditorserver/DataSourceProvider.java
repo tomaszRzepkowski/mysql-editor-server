@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import com.rzepkowski.mysqleditorserver.model.ConnectionModel;
 
 @Service
 public class DataSourceProvider {
@@ -54,4 +55,13 @@ public class DataSourceProvider {
         return currentSchema;
     }
 
+    public Connection tryToConnect(ConnectionModel data) {
+        dataSource = new MysqlDataSource();
+        dataSource.setUser(data.getUsername());
+        dataSource.setPassword(data.getPassword());
+        dataSource.setServerName(data.getHost());
+        dataSource.setPort(data.getPort());
+        dataSource.setDatabaseName(data.getSchema());
+        return getConnection();
+    }
 }
