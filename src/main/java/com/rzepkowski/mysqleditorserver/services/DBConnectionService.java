@@ -87,7 +87,7 @@ public class DBConnectionService {
     }
 
     public boolean tryToEstablishConnection(ConnectionModel data) throws SQLException {
-        Connection connection = this.dataSourceProvider.tryToConnect(data);
-        return connection != null && connection.isClosed();
+        Connection connection = this.dataSourceProvider.createNewConnection(data);
+        return connection != null && !connection.isClosed();
     }
 }

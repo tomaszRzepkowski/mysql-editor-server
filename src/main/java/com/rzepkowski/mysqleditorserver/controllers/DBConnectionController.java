@@ -28,8 +28,8 @@ public class DBConnectionController {
             if (!connectionEstablished) {
                 throw new SQLException("Connection closed");
             }
-        } catch (SQLException throwables) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, throwables.getMessage(), throwables);
+        } catch (SQLException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 }

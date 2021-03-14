@@ -12,25 +12,24 @@ import com.rzepkowski.mysqleditorserver.model.ConnectionModel;
 
 @Service
 public class DataSourceProvider {
+    private final static String INITIAL_SCHEMA = "information_schema";
+    private final static String DB_HOST = "localhost";
+    private final static String DB_USER = "editor";
+    private final static String DB_PASSWORD = "password";
+    private final static int DB_PORT = 3306;
     private final Logger logger =  LoggerFactory.getLogger(DataSourceProvider.class);
 
     private MysqlDataSource dataSource;
-    private final static String dbName = "sys";
-    private final static String INITIAL_SCHEMA = "information_schema";
-    private final static String dbHost = "localhost";
-    private final static int dbPort = 3306;
-    private final static String dbUser = "editor";
-    private final static String dbPassword = "password";
 
     private String currentSchema = INITIAL_SCHEMA;
 
     public DataSourceProvider() {
-        dataSource = new MysqlDataSource();
-        dataSource.setUser(dbUser);
-        dataSource.setPassword(dbPassword);
-        dataSource.setServerName(dbHost);
-        dataSource.setPort(dbPort);
-        dataSource.setDatabaseName(INITIAL_SCHEMA);
+//        dataSource = new MysqlDataSource();
+//        dataSource.setUser(DB_USER);
+//        dataSource.setPassword(DB_PASSWORD);
+//        dataSource.setServerName(DB_HOST);
+//        dataSource.setPort(DB_PORT);
+//        dataSource.setDatabaseName(INITIAL_SCHEMA);
     }
 
     public MysqlDataSource getDataSource() {
@@ -55,7 +54,7 @@ public class DataSourceProvider {
         return currentSchema;
     }
 
-    public Connection tryToConnect(ConnectionModel data) {
+    public Connection createNewConnection(ConnectionModel data) {
         dataSource = new MysqlDataSource();
         dataSource.setUser(data.getUsername());
         dataSource.setPassword(data.getPassword());

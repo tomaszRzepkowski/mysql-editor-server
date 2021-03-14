@@ -40,6 +40,8 @@ public class DBInformationController {
             return dbConnectionService.executeStatement("show databases;");
         } catch (SQLException throwables) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, throwables.getMessage(), throwables);
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage(), e);
         }
     }
 

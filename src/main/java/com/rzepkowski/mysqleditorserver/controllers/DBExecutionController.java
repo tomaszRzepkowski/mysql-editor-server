@@ -24,7 +24,6 @@ public class DBExecutionController {
 
     @GetMapping
     Map<String, Object> runSql(@RequestParam String sql) {
-        System.out.println(sql);
         try {
             return dbConnectionService.executeStatement(sql);
         } catch (SQLException throwables) {
