@@ -28,6 +28,9 @@ public class DBConnectionService {
         this.dataSourceProvider = dataSourceProvider;
     }
 
+    /**
+     * Returns multiple row from DB as Map
+     */
     public Map<String, Object> executeStatement(String sql) throws SQLException {
         Map<String, Object> results = null;
         try {
@@ -69,6 +72,35 @@ public class DBConnectionService {
 //                    columnCounter ++;
 //                }
 //            }
+            rs.close();
+            stmt.close();
+            return results;
+        } catch (SQLException e) {
+            logger.warn("User provided wrong SQL or there is DB connection problem", e);
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    /**
+     * Returns single row from DB as Map
+     */
+    public Map<String, Object> executeSingleStatement(String sql, boolean useLabel) throws SQLException {
+        Map<String, Object> results = null;
+        try {
+            Statement stmt = dataSourceProvider.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            final ResultSetMetaData meta = rs.getMetaData();
+            final int columnCount = meta.getColumnCount();
+            while (rs.next())
+            {
+                results = new HashMap<>();
+                for (int column = 1; column <= columnCount; ++column)
+                {
+                    String columnName = useLabel ? rs.getMetaData().getColumnLabel(column) : rs.getMetaData().getColumnName(column);
+                    final Object value = rs.getObject(column);
+                    results.put(columnName, value);
+                }
+            }
             rs.close();
             stmt.close();
             return results;
