@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.rzepkowski.mysqleditorserver.model.DBUserData;
+import com.rzepkowski.mysqleditorserver.user.DBUserData;
 import com.rzepkowski.mysqleditorserver.model.YNEnum;
 import com.rzepkowski.mysqleditorserver.services.DBConnectionService;
 

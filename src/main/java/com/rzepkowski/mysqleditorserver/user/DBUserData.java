@@ -1,4 +1,6 @@
-package com.rzepkowski.mysqleditorserver.model;
+package com.rzepkowski.mysqleditorserver.user;
+
+import com.rzepkowski.mysqleditorserver.model.YNEnum;
 
 public class DBUserData {
     String username;
