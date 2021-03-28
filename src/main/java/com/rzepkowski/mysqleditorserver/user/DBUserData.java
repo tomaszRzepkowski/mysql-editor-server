@@ -3,6 +3,7 @@ package com.rzepkowski.mysqleditorserver.user;
 import com.rzepkowski.mysqleditorserver.model.YNEnum;
 
 public class DBUserData {
+    String password;
     String username;
     String host;
     String lastPasswordChange;
@@ -26,6 +27,14 @@ public class DBUserData {
     YNEnum createRolePrivilege;
     YNEnum createUserPrivilege;
     YNEnum eventPrivilege;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;

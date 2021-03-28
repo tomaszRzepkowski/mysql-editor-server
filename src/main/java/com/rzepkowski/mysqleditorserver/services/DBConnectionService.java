@@ -122,4 +122,15 @@ public class DBConnectionService {
         Connection connection = this.dataSourceProvider.createNewConnection(data);
         return connection != null && !connection.isClosed();
     }
+
+    public void executeUpdate(String query) throws SQLException {
+        try {
+            Statement stmt = dataSourceProvider.getConnection().createStatement();
+            stmt.executeUpdate(query);
+            stmt.close();
+        } catch (SQLException e) {
+            logger.warn("User provided wrong SQL or there is DB connection problem", e);
+            throw new SQLException(e.getMessage());
+        }
+    }
 }

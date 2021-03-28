@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.rzepkowski.mysqleditorserver.user.DBUserData;
 import com.rzepkowski.mysqleditorserver.model.YNEnum;
 import com.rzepkowski.mysqleditorserver.services.DBConnectionService;
+import com.rzepkowski.mysqleditorserver.user.DBUserSqlBuilder;
 
 @RestController
 @RequestMapping("/users")
@@ -86,6 +90,36 @@ public class DBUsersController {
         } catch (SQLException throwables) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, throwables.getMessage(), throwables);
         }
+    }
+
+    @PutMapping()
+    void updateUser(@RequestBody DBUserData dbUserData) {
+        if (dbUserData == null) {
+            System.out.println("error");
+        }
+        String query = DBUserSqlBuilder.buildQuery(dbUserData);
+        try {
+            dbConnectionService.executeUpdate(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //save to db
+
+    }
+
+    @PostMapping()
+    void createUser(@RequestBody DBUserData dbUserData) {
+        if (dbUserData == null) {
+            System.out.println("error");
+        }
+        String query = DBUserSqlBuilder.buildQueryForCreate(dbUserData);
+        try {
+            dbConnectionService.executeUpdate(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //save to db
+
     }
 
 }
