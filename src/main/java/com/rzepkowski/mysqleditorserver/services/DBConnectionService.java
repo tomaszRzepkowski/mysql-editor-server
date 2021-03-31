@@ -1,5 +1,6 @@
 package com.rzepkowski.mysqleditorserver.services;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

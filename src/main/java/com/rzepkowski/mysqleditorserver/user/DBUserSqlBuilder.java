@@ -95,4 +95,9 @@ public class DBUserSqlBuilder {
             "VALUES (" + builder.toString() + ");";
     }
 
+    public static String buildQueryForDelete(String host, String username) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DROP USER '" + username + "'@'" + host + "';");
+        return builder.toString();
+    }
 }

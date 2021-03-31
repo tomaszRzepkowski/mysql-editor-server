@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import com.rzepkowski.mysqleditorserver.model.ConnectionModel;
 import com.rzepkowski.mysqleditorserver.services.DBConnectionService;
 
@@ -28,6 +29,8 @@ public class DBConnectionController {
             if (!connectionEstablished) {
                 throw new SQLException("Connection closed");
             }
+        } catch (CommunicationsException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (SQLException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +39,9 @@ public class DBUsersController {
 
     @GetMapping("/info")
     DBUserData getUsersWithName(@RequestParam String username) {
+        if (username == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passed no parameter", null);
+        }
         try {
             Map<String, Object> userData = dbConnectionService.executeSingleStatement("" +
                     "SELECT host as HOST, user as USER, password_last_changed as LAST_PASSWORD_CHANGE, account_locked as ACCOUNT_LOCKED,\n" +
@@ -95,7 +99,7 @@ public class DBUsersController {
     @PutMapping()
     void updateUser(@RequestBody DBUserData dbUserData) {
         if (dbUserData == null) {
-            System.out.println("error");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passed empty body", null);
         }
         String query = DBUserSqlBuilder.buildQuery(dbUserData);
         try {
@@ -110,9 +114,24 @@ public class DBUsersController {
     @PostMapping()
     void createUser(@RequestBody DBUserData dbUserData) {
         if (dbUserData == null) {
-            System.out.println("error");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passed empty body", null);
         }
         String query = DBUserSqlBuilder.buildQueryForCreate(dbUserData);
+        try {
+            dbConnectionService.executeUpdate(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //save to db
+
+    }
+
+    @DeleteMapping()
+    void deleteUser(@RequestParam String host, @RequestParam String username) {
+        if (username == null || host == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passed no parameter", null);
+        }
+        String query = DBUserSqlBuilder.buildQueryForDelete(host, username);
         try {
             dbConnectionService.executeUpdate(query);
         } catch (SQLException throwables) {
