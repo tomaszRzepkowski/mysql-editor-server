@@ -134,4 +134,8 @@ public class DBConnectionService {
             throw new SQLException(e.getMessage());
         }
     }
+
+    public void executeInsert(String query) throws SQLException {
+        executeUpdate(query);
+    }
 }
