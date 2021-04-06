@@ -40,12 +40,12 @@ public class DBExecutionController {
     }
 
     @PostMapping("/insert")
-    void executeInsert(@RequestBody List<SimplePair> pairs) {
-        // todo pass here schema and table
-        String schemaName = "test_schema";
-        String tableName = "users";
+    void executeInsert(@RequestBody List<SimplePair> pairs,
+                       @RequestParam String schema,
+                       @RequestParam String table
+                       ) {
         SqlInsertBuilder insertBuilder = new SqlInsertBuilder();
-        String sql = insertBuilder.withSchema(schemaName).withTable(tableName).withPairs(pairs).build();
+        String sql = insertBuilder.withSchema(schema).withTable(table).withPairs(pairs).build();
         try {
             dbConnectionService.executeInsert(sql);
         } catch (Exception e) {
